@@ -25,12 +25,23 @@ export function Cart(props: CartProps) {
     clickCaptureIgnore: [triggerRef],
   });
 
-  const { items: cartItems, submit, addItem } = useCart();
+  const { items: cartItems, submit, addItem, removeItem } = useCart();
 
   useEffect(() => {
     setItems(cartItems);
-    setCount(cartItems.length);
+    const totalItem = cartItems.reduce(
+      (acc, curr) => acc + (curr.quantity as number),
+      0
+    );
+    setCount(totalItem);
   }, [cartItems]);
+
+  const totalPrice = Math.ceil(
+    cartItems.reduce(
+      (acc, curr) => acc + (curr.quantity as number) * curr.price,
+      0
+    )
+  );
 
   return (
     <div style={{ position: "relative" }}>
@@ -49,12 +60,24 @@ export function Cart(props: CartProps) {
       >
         {count ? (
           items?.map((item, index) => (
-            <CartItem key={item.description + index} item={item} addItem={addItem} />
+            <CartItem
+              key={item.description + index}
+              item={item}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
           ))
         ) : (
           <p>Your order is empty</p>
         )}
-        <Button className="full-width" onClick={() => submit()}>Place Order</Button>
+        <Button className="full-width" onClick={() => submit()}>
+          <div style={{display:"flex", justifyContent:"space-between"}}>
+            <span>
+              Place Order
+            </span>
+            <span>${totalPrice} </span>
+          </div>
+        </Button>
       </div>
     </div>
   );

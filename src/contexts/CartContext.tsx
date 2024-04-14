@@ -5,12 +5,14 @@ type CartContextType = {
   items: MenuItem[];
   addItem: (item: MenuItem) => void;
   submit: () => void;
+  removeItem: (item: MenuItem) => void
 };
 
 const CartContext = createContext<CartContextType>({
   items: [],
   addItem: () => {},
   submit: () => {},
+  removeItem: () => {}
 });
 
 type CartProviderProps = {
@@ -30,10 +32,24 @@ export const CartProvider = ({ children }: CartProviderProps) => {
             quantity: (items[index].quantity as number) + 1,
           };
         }
-        return [...items]
+        return [...items];
       } else {
         return [...items, { ...item, quantity: 1 }];
       }
+    });
+  };
+
+  const removeItem = (item: MenuItem) => {
+    setItems((items: MenuItem[]) => {
+      const filterdItems = items.filter((ele) => {
+        if (item.name === ele.name) {
+          if (ele.quantity === 1) return false;
+          ele.quantity = (ele.quantity as number) - 1;
+          return true;
+        }
+        return true;
+      });
+      return [...filterdItems];
     });
   };
 
@@ -44,7 +60,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   };
 
   return (
-    <CartContext.Provider value={{ items, addItem, submit }}>
+    <CartContext.Provider value={{ items, addItem, removeItem, submit }}>
       {children}
     </CartContext.Provider>
   );
