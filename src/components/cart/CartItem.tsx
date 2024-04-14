@@ -1,5 +1,6 @@
 import { MenuItem } from "../../api/menu";
 import styles from "./CartItem.module.css";
+import { ReactComponent as TrashIcon } from "../../assets/trash.svg";
 
 type CartItemProps = {
   item: MenuItem;
@@ -22,11 +23,11 @@ export function CartItem({ item, addItem, removeItem }: CartItemProps) {
       <div className={styles.cartDescription}>
         <label className={styles.title}>{item.name}</label>
         <div className={styles.description}>{item.description}</div>
-        <div className={styles.price}>${item.price}</div>
+        <div className={styles.price}>${Math.ceil(item.price * (item.quantity || 1))}</div>
       </div>
       <div>
         <div className={styles.cartButton}>
-          <button onClick={() => removeItem(item)}>-</button>
+          <button onClick={() => removeItem(item)}>{(item.quantity as number) >1 ? "-" : <TrashIcon/> }</button>
           <span>{item.quantity}</span>
           <button onClick={() => addItem(item)}>+</button>
         </div>
