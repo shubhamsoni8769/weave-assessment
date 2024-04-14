@@ -21,7 +21,20 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const [items, setItems] = useState<MenuItem[]>([]);
 
   const addItem = (item: MenuItem) => {
-    return setItems((items) => [...items, item]);
+    setItems((items: MenuItem[]) => {
+      const index = items.findIndex((ele) => item.name === ele.name);
+      if (index !== -1) {
+        if (items[index].quantity) {
+          items[index] = {
+            ...items[index],
+            quantity: (items[index].quantity as number) + 1,
+          };
+        }
+        return [...items]
+      } else {
+        return [...items, { ...item, quantity: 1 }];
+      }
+    });
   };
 
   const submit = () => {

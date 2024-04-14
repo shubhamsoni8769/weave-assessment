@@ -25,7 +25,7 @@ export function Cart(props: CartProps) {
     clickCaptureIgnore: [triggerRef],
   });
 
-  const { items: cartItems, submit } = useCart();
+  const { items: cartItems, submit, addItem } = useCart();
 
   useEffect(() => {
     setItems(cartItems);
@@ -49,7 +49,7 @@ export function Cart(props: CartProps) {
       >
         {count ? (
           items?.map((item, index) => (
-            <CartItem key={item.description + index} item={item} />
+            <CartItem key={item.description + index} item={item} addItem={addItem} />
           ))
         ) : (
           <p>Your order is empty</p>

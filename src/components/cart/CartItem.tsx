@@ -3,9 +3,10 @@ import styles from "./CartItem.module.css";
 
 type CartItemProps = {
   item: MenuItem;
+  addItem: Function
 };
 
-export function CartItem({ item }: CartItemProps) {
+export function CartItem({ item, addItem }: CartItemProps) {
   return (
     <div className={styles.item}>
         {item.imgUrl ? (
@@ -24,9 +25,9 @@ export function CartItem({ item }: CartItemProps) {
       </div>
       <div>
         <div className={styles.cartButton}>
-          <button>-</button>
-          <span>1</span>
-          <button>+</button>
+          <button >-</button>
+          <span>{item.quantity}</span>
+          <button onClick={() => addItem(item)}>+</button>
         </div>
       </div>
     </div>

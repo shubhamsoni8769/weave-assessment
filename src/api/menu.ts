@@ -9,6 +9,7 @@ export type MenuItem = {
   price: number;
   tags: string[];
   imgUrl?: string;
+  quantity?: number;
 };
 
 export type MenuFilter = {
