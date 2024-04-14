@@ -6,6 +6,7 @@ import { useOnClickOutside } from "../../hooks/use-onclick-outside";
 import { useCart } from "../../contexts/CartContext";
 import { Button } from "../button/Button";
 import { MenuItem } from "../../api/menu";
+import { CartItem } from "./CartItem";
 
 type CartProps = {};
 
@@ -47,11 +48,13 @@ export function Cart(props: CartProps) {
         className={cls(styles.flyout, !isOpen && styles.closed)}
       >
         {count ? (
-          items?.map((item) => <li key={item.name}>{item.name}</li>)
+          items?.map((item, index) => (
+            <CartItem key={item.description + index} item={item} />
+          ))
         ) : (
           <p>Your order is empty</p>
         )}
-        <Button onClick={() => submit()}>Submit</Button>
+        <Button className="full-width" onClick={() => submit()}>Place Order</Button>
       </div>
     </div>
   );
